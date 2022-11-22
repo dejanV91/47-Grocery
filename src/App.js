@@ -9,13 +9,21 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const id = new Date().getTime().toString();
     if (input !== "") {
-      setList([...list, input]);
+      setList([...list, { id, input }]);
       setShow(true);
       setInput("");
     } else {
       alert("nije dobro ukucan input");
     }
+  };
+
+  const editInput = (e) => {
+    e.preventDefault();
+    let idItem = e.currentTarget.parentNode.parentNode;
+    let value = e.currentTarget.value;
+    console.log(value);
   };
 
   return (
@@ -37,7 +45,14 @@ function App() {
             </button>
           </div>
         </form>
-        {show && <Container list={list} />}
+        {show && (
+          <Container
+            list={list}
+            setList={setList}
+            setShow={setShow}
+            editInput={editInput}
+          />
+        )}
       </section>
     </>
   );
