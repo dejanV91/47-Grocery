@@ -6,24 +6,35 @@ function App() {
   const [input, setInput] = useState("");
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
+  const [edit, setEdit] = useState(false);
+  const [idVar, setIdVar] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const id = new Date().getTime().toString();
-    if (input !== "") {
-      setList([...list, { id, input }]);
-      setShow(true);
+    if (!edit) {
+      const id = new Date().getTime().toString();
+      if (input !== "") {
+        setList([...list, { id, input }]);
+        setShow(true);
+        setInput("");
+      } else {
+        alert("nije dobro ukucan input");
+      }
+    }
+    if (edit) {
+      const newEdit = (list.find((item) => item.id === idVar).input = input);
       setInput("");
-    } else {
-      alert("nije dobro ukucan input");
+      setEdit(false);
     }
   };
 
   const editInput = (e) => {
     e.preventDefault();
-    let idItem = e.currentTarget.parentNode.parentNode;
+    let idItem = e.currentTarget.parentNode.parentNode.id;
     let value = e.currentTarget.value;
-    console.log(value);
+    setInput(value);
+    setIdVar(idItem);
+    setEdit(true);
   };
 
   return (
@@ -41,7 +52,7 @@ function App() {
               onChange={(e) => setInput(e.target.value)}
             />
             <button type="submit" className="submit-btn">
-              submit
+              {edit ? "edit" : "submit"}
             </button>
           </div>
         </form>
