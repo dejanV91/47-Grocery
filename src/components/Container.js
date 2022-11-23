@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SingleItem } from "./SingleItem";
 
-export const Container = ({ list, setList, setShow, editInput }) => {
+export const Container = ({
+  list,
+  setList,
+  setShow,
+  editInput,
+  deleteItem,
+}) => {
   const clearAllItems = () => {
     setList([]);
     setShow(false);
@@ -10,7 +16,7 @@ export const Container = ({ list, setList, setShow, editInput }) => {
   return (
     <div className="grocery-container">
       <div className="grocery-list">
-        <SingleItem list={list} setList={setList} editInput={editInput} />
+        <SingleItem list={list} editInput={editInput} deleteItem={deleteItem} />
       </div>
       <button className="clear-btn" onClick={clearAllItems}>
         clear items

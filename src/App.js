@@ -22,9 +22,21 @@ function App() {
       }
     }
     if (edit) {
-      const newEdit = (list.find((item) => item.id === idVar).input = input);
+      list.find((item) => item.id === idVar).input = input;
       setInput("");
       setEdit(false);
+    }
+  };
+
+  const deleteItem = (e) => {
+    e.preventDefault();
+    let idItem = e.currentTarget.parentNode.parentNode.id;
+    let newList = list.filter((item) => item.id !== idItem);
+    if (newList.length === 0) {
+      setList(newList);
+      setShow(false);
+    } else {
+      setList(newList);
     }
   };
 
@@ -62,6 +74,7 @@ function App() {
             setList={setList}
             setShow={setShow}
             editInput={editInput}
+            deleteItem={deleteItem}
           />
         )}
       </section>
