@@ -1,5 +1,9 @@
 import React from "react";
 
-export const Alert = () => {
-  return <p className="alert">message</p>;
+export const Alert = ({ message, danger }) => {
+  return (
+    <p className={`alert ${danger ? "alert-success" : "alert-danger"}`}>
+      {message}
+    </p>
+  );
 };

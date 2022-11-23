@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./components/Container";
-// import { Alert } from "./components/Alert";
+import { Alert } from "./components/Alert";
+import text from "./shared/messages";
 
 function App() {
   const [input, setInput] = useState("");
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
+
   const [edit, setEdit] = useState(false);
   const [idVar, setIdVar] = useState("");
+  const [alertText, setAlertText] = useState(false);
+  const [message, setMessage] = useState("");
+  const [danger, setDanger] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,14 +20,23 @@ function App() {
       const id = new Date().getTime().toString();
       if (input !== "") {
         setList([...list, { id, input }]);
+
         setShow(true);
+        setMessage(text.success.add);
+        setDanger(true);
+        setAlertText(true);
         setInput("");
       } else {
-        alert("nije dobro ukucan input");
+        setMessage(text.danger.enter);
+        setDanger(false);
+        setAlertText(true);
       }
     }
     if (edit) {
       list.find((item) => item.id === idVar).input = input;
+      setMessage(text.success.edit);
+      setDanger(true);
+      setAlertText(true);
       setInput("");
       setEdit(false);
     }
@@ -35,8 +49,14 @@ function App() {
     if (newList.length === 0) {
       setList(newList);
       setShow(false);
+      setMessage(text.danger.empty);
+      setDanger(false);
+      setAlertText(true);
     } else {
       setList(newList);
+      setMessage(text.danger.removed);
+      setDanger(false);
+      setAlertText(true);
     }
   };
 
@@ -49,11 +69,18 @@ function App() {
     setEdit(true);
   };
 
+  useEffect(() => {
+    const time = setInterval(() => {
+      setAlertText(false);
+      return clearInterval(time);
+    }, 6000);
+  }, [alertText]);
+
   return (
     <>
       <section className="section-center">
         <form className="grocery-form" onSubmit={handleSubmit}>
-          {/* <Alert /> */}
+          {alertText && <Alert message={message} danger={danger} />}
           <h3>grocery bud</h3>
           <div className="form-control">
             <input
@@ -70,6 +97,9 @@ function App() {
         </form>
         {show && (
           <Container
+            setMessage={setMessage}
+            setDanger={setDanger}
+            setAlertText={setAlertText}
             list={list}
             setList={setList}
             setShow={setShow}

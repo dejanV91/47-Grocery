@@ -1,5 +1,6 @@
 import React from "react";
 import { SingleItem } from "./SingleItem";
+import text from "../shared/messages";
 
 export const Container = ({
   list,
@@ -7,8 +8,14 @@ export const Container = ({
   setShow,
   editInput,
   deleteItem,
+  setMessage,
+  setDanger,
+  setAlertText,
 }) => {
   const clearAllItems = () => {
+    setMessage(text.danger.empty);
+    setDanger(false);
+    setAlertText(true);
     setList([]);
     setShow(false);
   };
